@@ -60,6 +60,7 @@ class Matcher:
         height, width = drone_img.shape
         pts = np.float32([[0, 0], [0, height - 1], [width - 1,
                                                     height - 1], [width - 1, 0]]).reshape(-1, 1, 2)
+
         dst = cv2.perspectiveTransform(pts, self._homography)
         lidar_img = cv2.polylines(
             lidar_img, [

@@ -22,10 +22,11 @@ class FeatureDetector:
         return self._detectors[algorithm]()
 
     def compute_features_and_descriptor(self):
-        self.drone_img_features, self.drone_img_descs = self._drone_img_detector.detectAndCompute(
-            self._drone_img, None)
-        self.lidar_img_features, self.lidar_img_descs = self._lidar_img_detector.detectAndCompute(
-            self._lidar_img, None)
+        self.drone_img_features, self.drone_img_descs =
+        self._drone_img_detector.detectAndCompute(self._drone_img, None)
+
+        self.lidar_img_features, self.lidar_img_descs =
+        self._lidar_img_detector.detectAndCompute(self._lidar_img, None)
 
     def get_feature_and_descriptor(self, img_type):
         if img_type == "drone":
