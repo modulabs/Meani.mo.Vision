@@ -1,8 +1,9 @@
 import cv2
 
+
 class Preprocessor:
 
-    def __init__(self,drone_img,lidar_img):
+    def __init__(self, drone_img, lidar_img):
         self.drone_img = drone_img
         self.lidar_img = lidar_img
 
@@ -14,12 +15,14 @@ class Preprocessor:
         self.processed_lidar_img = self._lidar_img_preprocessing()
 
     def _drone_img_preprocessing(self):
-        #TODO
-        return cv2.GaussianBlur(cv2.cvtColor(self.drone_img, cv2.COLOR_BGR2GRAY), (5, 5), 0)
+        # TODO
+        return cv2.GaussianBlur(
+            cv2.cvtColor(
+                self.drone_img, cv2.COLOR_BGR2GRAY), (5, 5), 0)
 
     def _lidar_img_preprocessing(self):
-        #TODO
-        return cv2.medianBlur(self.lidar_img,5)
+        # TODO
+        return cv2.medianBlur(self.lidar_img, 5)
 
     def get_processed_imgs(self):
         return self.processed_drone_img, self.processed_lidar_img
