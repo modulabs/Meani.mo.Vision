@@ -58,8 +58,8 @@ class Matcher:
     def draw_matches(self, drone_img, lidar_img, file_name):
         matchesMask = self._status.ravel().tolist()
         height, width = drone_img.shape
-        pts = np.float32([[0, 0], [0, height - 1], [width - 1,
-                                                height - 1], [width - 1, 0]]).reshape(-1, 1, 2)
+        pts = np.float32([[0, 0], [0, height - 1], [width - 1,\
+                                                    height - 1], [width - 1, 0]]).reshape(-1, 1, 2)
 
         dst = cv2.perspectiveTransform(pts, self._homography)
         lidar_img = cv2.polylines(
