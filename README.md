@@ -9,7 +9,7 @@ This repository is for meani.mo project users.
 |-|-|-|-|
 |`--drone_path` |`-d`|drone image path for loading|-d ./images/drone1.bmp |
 |`--lidar_path`|`-l`|lidar image path for loading|-l ./images/lidar.bmp|
-|`--dst_path`|`-d`|output image path for saving|./result.bmp|
+|`--dst_path`|`-o`|output image path for saving|-o ./result.bmp|
 
 
 # PEP8 Git Commit Hook
