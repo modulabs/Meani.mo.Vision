@@ -1,7 +1,6 @@
 import math
 import os
 import sys
-
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
