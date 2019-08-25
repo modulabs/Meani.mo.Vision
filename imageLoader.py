@@ -5,18 +5,11 @@ import logging
 
 class ImageLoader:
 
-    def __init__(self, drone_img_path, lidar_img_path):
-        self.drone_img_path = drone_img_path
-        self.lidar_img_path = lidar_img_path
-        self.drone_img = None
-        self.lidar_img = None
+    def __init__(self):
+        self.img = None
 
-    def load_imgs(self):
-        self.drone_img = self.load_img(self.drone_img_path)
-        self.lidar_img = self.load_img(self.lidar_img_path)
-
-    def get_imgs(self):
-        return self.drone_img, self.lidar_img
+    def get_img(self):
+        return self.img
 
     def load_img(self, path):
         try:
@@ -25,4 +18,4 @@ class ImageLoader:
             logging.error("{}".format(e))
             raise e
         else:
-            return img
+            self.img = img
