@@ -5,7 +5,7 @@ This repository is for meani.mo project users.
 
 > python main.py -d ./images/drone1.bmp -l ./images/lidar1.bmp -o ./output.bmp
 > 
-|argment|shortened|description|example|
+|argument|shortened|description|example|
 |-|-|-|-|
 |`--drone_path` |`-d`|drone image path for loading|-d ./images/drone1.bmp |
 |`--lidar_path`|`-l`|lidar image path for loading|-l ./images/lidar.bmp|
