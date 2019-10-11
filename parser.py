@@ -6,13 +6,13 @@ def make_parser():
     parser.add_argument(
         '--drone_path',
         "-d",
-        default='./images/drone1.bmp',
+        default='./experiments/case2/drone5.bmp',
         required=False,
         help='Path in which drone image is located')
     parser.add_argument(
         '--lidar_path',
         "-l",
-        default='./images/lidar1.bmp',
+        default='./experiments/case2/lidar5.bmp',
         required=False,
         help='Path in which lidar image is located')
     parser.add_argument(

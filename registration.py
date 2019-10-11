@@ -39,8 +39,8 @@ def registrate(drone_img_ori, lidar_img_ori):
 
     # Show matches
     matcher.draw_matches(drone_img, lidar_img, status, homography)
-    # matcher.draw_matches(drone_img, lidar_img, None, homography)
-    # matcher.draw_matches(drone_img, lidar_img)
+    matcher.draw_matches(drone_img, lidar_img, None, homography)
+    matcher.draw_matches(drone_img, lidar_img)
 
     result_image_width = drone_img_ori.shape[1] + lidar_img_ori.shape[1]
     result_image_height = drone_img_ori.shape[0]
@@ -74,6 +74,6 @@ def find_homography(features1, features2, matches):
     dst_points = np.array([k.pt for k in key_points2])
 
     homography, status = cv2.findHomography(
-        src_points, dst_points, cv2.RANSAC, 5.0)
+        src_points, dst_points, cv2.RANSAC, 5.0, maxIters=500000)
 
     return homography, status

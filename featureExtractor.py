@@ -15,6 +15,7 @@ class FeatureExtractor:
 
         if(algorithm == 'SIFT'):
             return cv2.xfeatures2d.SIFT_create()
+            #return cv2.xfeatures2d.SIFT_create(edgeThreshold=0)
 
     def compute(self):
         self.features, self.descriptors = self._extractor.detectAndCompute(
