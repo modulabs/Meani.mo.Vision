@@ -32,5 +32,11 @@ def make_parser():
         default=True,
         help='Imshow Intermediate Results'
     )
+    parser.add_argument(
+        '--mask',
+        '-m',
+        default=False,
+        help='Applying binary mask to a pcl image'
+    )
 
     return parser.parse_args()
