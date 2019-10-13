@@ -14,7 +14,7 @@ class Matcher:
         FLANN_INDEX_KDTREE = 1
         flann_params = dict(algorithm=FLANN_INDEX_KDTREE,
                             trees=5)
-        self.matcher = cv2.FlannBasedMatcher(flann_params, {})
+        self.matcher = cv2.FlannBasedMatcher(flann_params, {}) # try also cv2.BFMatcher()
 
         self._drone_features = drone_features
         self._drone_descs = drone_descs
