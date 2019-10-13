@@ -25,7 +25,8 @@ def main(args):
         'experiment_num': args.experiment_num,
         'drone_folder_path': args.drone_folder_path,
         'pcl_path': args.pcl_path,
-        'debug': args.debug
+        'debug': args.debug,
+        'record': args.record
     }
 
     dataSetStr = os.path.basename(
@@ -34,9 +35,11 @@ def main(args):
         './', 'experiment' + str(common_args['experiment_num']) + '_' + dataSetStr)
     makedirs(dst_path)
 
-    fourcc = cv2.VideoWriter_fourcc(*'DIVX')
-    video_dst = os.path.join(dst_path, 'output.avi')
-    vid = cv2.VideoWriter(video_dst, fourcc, 1, (3000, 3000), True, )
+    if common_args['record'] == True:
+        video_size = (3000, 3000)
+        fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+        video_dst = os.path.join(dst_path, 'output.avi')
+        vid = cv2.VideoWriter(video_dst, fourcc, 1, video_size, True, )
 
     image_list = glob.glob(os.path.join(
         common_args['drone_folder_path'], ('*.JPG')))
@@ -56,10 +59,12 @@ def main(args):
         result = registration.registrate(drone_image, pcl_image, args)
         cv2.imwrite(os.path.join(
             dst_path, 'result_' + str(idx) + '.jpg'), result)
+    
+        if common_args['record'] == True:
+            vid.write(cv2.resize(result, (3000, 3000)))
 
-        vid.write(cv2.resize(result, (3000, 3000)))
-
-    vid.release()
+    if common_args['record'] == True:
+        vid.release()
 
 
 if __name__ == '__main__':
