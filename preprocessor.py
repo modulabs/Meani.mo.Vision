@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+
 class Preprocessor:
 
     def __init__(self, drone_img, pcl_img):
@@ -19,13 +20,14 @@ class Preprocessor:
         self.masked_pcl_img = self._process_masked_pcl_img()
 
     def _process_masked_pcl_img(self):
-        masked_pcl_img = cv2.bitwise_and(self.processed_pcl_img, self.processed_pcl_mask , None)
+        masked_pcl_img = cv2.bitwise_and(
+            self.processed_pcl_img, self.processed_pcl_mask, None)
         return masked_pcl_img
 
     def _drone_img_preprocessing(self):
         # TODO
         return cv2.cvtColor(self.drone_img, cv2.COLOR_BGR2GRAY)
-        #return cv2.GaussianBlur(
+        # return cv2.GaussianBlur(
         #    cv2.cvtColor(
         #        self.drone_img, cv2.COLOR_BGR2GRAY), (5, 5), 0)
 
@@ -37,7 +39,8 @@ class Preprocessor:
         kernel = np.ones((5, 5), np.uint8)
 
         mask_ero = cv2.erode(mask, kernel, iterations=7)
-        contours = cv2.findContours(mask_ero, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+        contours = cv2.findContours(
+            mask_ero, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
 
         max_idx = 0
         max_len = 0
@@ -56,7 +59,7 @@ class Preprocessor:
 
         mask3 = cv2.dilate(mask2, kernel, iterations=5)
 
-        return mask3 
+        return mask3
 
     def _pcl_img_preprocessing(self):
         gray_img = cv2.cvtColor(self.pcl_img, cv2.COLOR_BGR2GRAY)

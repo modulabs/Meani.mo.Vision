@@ -8,6 +8,7 @@ import numpy as np
 
 np.random.seed(42)  # Reproducibility
 
+
 def makedirs(path):
     # Intended behavior: try to create the directory,
     # pass if the directory exists already, fails otherwise.
@@ -19,24 +20,26 @@ def makedirs(path):
             raise
 
 
-
 def main(args):
     common_args = {
-        'experiment_num'   : args.experiment_num,
+        'experiment_num': args.experiment_num,
         'drone_folder_path': args.drone_folder_path,
-        'pcl_path'         : args.pcl_path,
-        'debug'            : args.debug
+        'pcl_path': args.pcl_path,
+        'debug': args.debug
     }
 
-    dataSetStr = os.path.basename(os.path.normpath(common_args['drone_folder_path']))
-    dst_path = os.path.join('./', 'experiment' + str(common_args['experiment_num']) + '_' + dataSetStr)
-    makedirs(dst_path)    
+    dataSetStr = os.path.basename(
+        os.path.normpath(common_args['drone_folder_path']))
+    dst_path = os.path.join(
+        './', 'experiment' + str(common_args['experiment_num']) + '_' + dataSetStr)
+    makedirs(dst_path)
 
     fourcc = cv2.VideoWriter_fourcc(*'DIVX')
     video_dst = os.path.join(dst_path, 'output.avi')
-    vid = cv2.VideoWriter(video_dst, fourcc, 1, (512,512), True, )
-    
-    image_list = glob.glob(os.path.join(common_args['drone_folder_path'], ('*.JPG')))
+    vid = cv2.VideoWriter(video_dst, fourcc, 1, (512, 512), True, )
+
+    image_list = glob.glob(os.path.join(
+        common_args['drone_folder_path'], ('*.JPG')))
     pcl_path = common_args['pcl_path']
 
     pcl_img_loader = Loader()
@@ -46,16 +49,19 @@ def main(args):
 
     for idx, drone_path in enumerate(image_list):
         drone_img_loader.load_img(drone_path)
-        
+
         drone_image = drone_img_loader.get_img()
         pcl_image = pcl_img_loader.get_img()
 
-        result = registration.registrate(drone_image,pcl_image,args,dst_path,idx,debug=common_args['debug'])
-        cv2.imwrite(os.path.join(dst_path, 'result_' + str(idx) + '.jpg'), result)
+        result = registration.registrate(
+            drone_image, pcl_image, args, dst_path, idx, debug=common_args['debug'])
+        cv2.imwrite(os.path.join(
+            dst_path, 'result_' + str(idx) + '.jpg'), result)
 
-        vid.write(cv2.resize(result, (512,512)))
+        vid.write(cv2.resize(result, (512, 512)))
 
     vid.release()
+
 
 if __name__ == '__main__':
     args = parser.make_parser()

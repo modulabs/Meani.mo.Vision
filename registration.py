@@ -42,14 +42,14 @@ def registrate(drone_img_ori, pcl_img_ori, args, dst_path, idx, debug=False):
     #matcher.draw_matches(drone_img, pcl_img , None, homography)
     #matcher.draw_matches(drone_img, pcl_img )
 
-
     registated_image = cv2.warpPerspective(
         drone_img_ori, homography, (pcl_img.shape[1], pcl_img.shape[0]))
 
-    ret_image = cv2.add(registated_image, cv2.cvtColor(pcl_img, cv2.COLOR_GRAY2BGR))
+    ret_image = cv2.add(registated_image, cv2.cvtColor(
+        pcl_img, cv2.COLOR_GRAY2BGR))
 
-    #plt.imshow(ret_image)
-    #plt.show()
+    # plt.imshow(ret_image)
+    # plt.show()
 
     return ret_image
 
