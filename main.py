@@ -18,6 +18,8 @@ def makedirs(path):
         if not os.path.isdir(path):
             raise
 
+
+
 def main(args):
     common_args = {
         'experiment_num'   : args.experiment_num,
@@ -30,6 +32,10 @@ def main(args):
     dst_path = os.path.join('./', 'experiment' + str(common_args['experiment_num']) + '_' + dataSetStr)
     makedirs(dst_path)    
 
+    fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+    video_dst = os.path.join(dst_path, 'output.avi')
+    vid = cv2.VideoWriter(video_dst, fourcc, 1, (512,512), True, )
+    
     image_list = glob.glob(os.path.join(common_args['drone_folder_path'], ('*.JPG')))
     pcl_path = common_args['pcl_path']
 
@@ -46,6 +52,10 @@ def main(args):
 
         result = registration.registrate(drone_image,pcl_image,args,dst_path,idx,debug=common_args['debug'])
         cv2.imwrite(os.path.join(dst_path, 'result_' + str(idx) + '.jpg'), result)
+
+        vid.write(cv2.resize(result, (512,512)))
+
+    vid.release()
 
 if __name__ == '__main__':
     args = parser.make_parser()
