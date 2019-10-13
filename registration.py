@@ -11,7 +11,7 @@ from featureExtractor import FeatureExtractor
 from matcher import Matcher
 
 
-def registrate(drone_img_ori, pcl_img_ori, args, dst_path, idx, debug=False):
+def registrate(drone_img_ori, pcl_img_ori, args):
     common_args = {
         'use_mask': args.mask,
         'debug': args.debug

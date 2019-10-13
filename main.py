@@ -36,7 +36,7 @@ def main(args):
 
     fourcc = cv2.VideoWriter_fourcc(*'DIVX')
     video_dst = os.path.join(dst_path, 'output.avi')
-    vid = cv2.VideoWriter(video_dst, fourcc, 1, (512, 512), True, )
+    vid = cv2.VideoWriter(video_dst, fourcc, 1, (3000, 3000), True, )
 
     image_list = glob.glob(os.path.join(
         common_args['drone_folder_path'], ('*.JPG')))
@@ -53,12 +53,11 @@ def main(args):
         drone_image = drone_img_loader.get_img()
         pcl_image = pcl_img_loader.get_img()
 
-        result = registration.registrate(
-            drone_image, pcl_image, args, dst_path, idx, debug=common_args['debug'])
+        result = registration.registrate(drone_image, pcl_image)
         cv2.imwrite(os.path.join(
             dst_path, 'result_' + str(idx) + '.jpg'), result)
 
-        vid.write(cv2.resize(result, (512, 512)))
+        vid.write(cv2.resize(result, (3000, 3000)))
 
     vid.release()
 
