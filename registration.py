@@ -11,55 +11,47 @@ from featureExtractor import FeatureExtractor
 from matcher import Matcher
 
 
-def registrate(drone_img_ori, lidar_img_ori):
+def registrate(drone_img_ori, pcl_img_ori, args, dst_path, idx, debug=False):
 
     # Preprocess Images
-    img_preprocessor = Preprocessor(drone_img_ori, lidar_img_ori)
+    img_preprocessor = Preprocessor(drone_img_ori, pcl_img_ori)
     img_preprocessor.preprocessing()
-    drone_img, lidar_img = img_preprocessor.get_processed_imgs()
+    drone_img, pcl_img, masked_pcl_img, pcl_mask = img_preprocessor.get_processed_imgs()
 
     # Extract Features
     drone_feature_extractor = FeatureExtractor(drone_img, "SIFT")
-    lidar_feature_extractor = FeatureExtractor(lidar_img, "SIFT")
+    pcl_feature_extractor = FeatureExtractor(pcl_img, "SIFT")
 
     drone_feature_extractor.compute()
-    lidar_feature_extractor.compute()
+    pcl_feature_extractor.compute(pcl_mask)
 
     drone_features, drone_descs = drone_feature_extractor.get_features_and_descriptors()
-    lidar_features, lidar_descs = lidar_feature_extractor.get_features_and_descriptors()
+    pcl_features, pcl_descs = pcl_feature_extractor.get_features_and_descriptors()
 
     # Find Matching
-    matcher = Matcher(drone_features, drone_descs, lidar_features, lidar_descs)
+    matcher = Matcher(drone_features, drone_descs, pcl_features, pcl_descs)
     matcher.extract_match()
     good_matchs = matcher.get_good_matchs()
 
     # Find Homography
     homography, status = find_homography(
-        drone_features, lidar_features, good_matchs)
+        drone_features, pcl_features, good_matchs)
 
     # Show matches
-    matcher.draw_matches(drone_img, lidar_img, status, homography)
-    # matcher.draw_matches(drone_img, lidar_img, None, homography)
-    # matcher.draw_matches(drone_img, lidar_img)
+    #matcher.draw_matches(drone_img, pcl_img , status, homography)
+    #matcher.draw_matches(drone_img, pcl_img , None, homography)
+    #matcher.draw_matches(drone_img, pcl_img )
 
-    result_image_width = drone_img_ori.shape[1] + lidar_img_ori.shape[1]
-    result_image_height = drone_img_ori.shape[0]
-
-    # Warp and Image Blending
     registated_image = cv2.warpPerspective(
-        drone_img_ori, homography, (result_image_width, result_image_height))
+        drone_img_ori, homography, (pcl_img.shape[1], pcl_img.shape[0]))
 
-    image_roi = registated_image[0:lidar_img_ori.shape[0],
-                                 0:lidar_img_ori.shape[1]]
-    image_roi = 0.5 * image_roi + lidar_img_ori * 0.5
+    ret_image = cv2.add(registated_image, cv2.cvtColor(
+        pcl_img, cv2.COLOR_GRAY2BGR))
 
-    registated_image[0:lidar_img_ori.shape[0],
-                     0:lidar_img_ori.shape[1]] = image_roi
+    # plt.imshow(ret_image)
+    # plt.show()
 
-    plt.imshow(registated_image, 'gray')
-    plt.show()
-
-    return registated_image
+    return ret_image
 
 
 def find_homography(features1, features2, matches):
@@ -74,6 +66,6 @@ def find_homography(features1, features2, matches):
     dst_points = np.array([k.pt for k in key_points2])
 
     homography, status = cv2.findHomography(
-        src_points, dst_points, cv2.RANSAC, 5.0)
+        src_points, dst_points, cv2.RANSAC, 5.0, maxIters=500000)
 
     return homography, status
