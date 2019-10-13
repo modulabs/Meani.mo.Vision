@@ -53,7 +53,7 @@ def main(args):
         drone_image = drone_img_loader.get_img()
         pcl_image = pcl_img_loader.get_img()
 
-        result = registration.registrate(drone_image, pcl_image)
+        result = registration.registrate(drone_image, pcl_image, args)
         cv2.imwrite(os.path.join(
             dst_path, 'result_' + str(idx) + '.jpg'), result)
 
