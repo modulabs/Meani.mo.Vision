@@ -32,5 +32,16 @@ def make_parser():
         default=True,
         help='Imshow Intermediate Results'
     )
+    parser.add_argument(
+        '--mask',
+        '-m',
+        default=False,
+        help='Applying binary mask to a pcl image'
+    )
+    parser.add_argument(
+        '--record',
+        default=True,
+        help='Record result video for making GIF'
+    )
 
     return parser.parse_args()

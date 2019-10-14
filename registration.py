@@ -11,7 +11,11 @@ from featureExtractor import FeatureExtractor
 from matcher import Matcher
 
 
-def registrate(drone_img_ori, pcl_img_ori, args, dst_path, idx, debug=False):
+def registrate(drone_img_ori, pcl_img_ori, args):
+    common_args = {
+        'use_mask': args.mask,
+        'debug': args.debug
+    }
 
     # Preprocess Images
     img_preprocessor = Preprocessor(drone_img_ori, pcl_img_ori)
@@ -23,7 +27,12 @@ def registrate(drone_img_ori, pcl_img_ori, args, dst_path, idx, debug=False):
     pcl_feature_extractor = FeatureExtractor(pcl_img, "SIFT")
 
     drone_feature_extractor.compute()
-    pcl_feature_extractor.compute(pcl_mask)
+
+    if common_args['use_mask'] is True:
+        pcl_feature_extractor.compute(mask=pcl_mask)
+
+    else:
+        pcl_feature_extractor.compute(mask=None)
 
     drone_features, drone_descs = drone_feature_extractor.get_features_and_descriptors()
     pcl_features, pcl_descs = pcl_feature_extractor.get_features_and_descriptors()
