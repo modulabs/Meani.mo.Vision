@@ -25,8 +25,12 @@ def main(args):
         'experiment_num': args.experiment_num,
         'drone_folder_path': args.drone_folder_path,
         'pcl_path': args.pcl_path,
+<<<<<<< HEAD
         'debug': args.debug,
         'record': args.record
+=======
+        'debug': args.debug
+>>>>>>> 41d1f5d1ff270c1257ec6b12c13efc3a8cafc482
     }
 
     dataSetStr = os.path.basename(
@@ -35,11 +39,17 @@ def main(args):
         './', 'experiment' + str(common_args['experiment_num']) + '_' + dataSetStr)
     makedirs(dst_path)
 
+<<<<<<< HEAD
     if common_args['record'] is True:
         video_size = (3000, 3000)
         fourcc = cv2.VideoWriter_fourcc(*'DIVX')
         video_dst = os.path.join(dst_path, 'output.avi')
         vid = cv2.VideoWriter(video_dst, fourcc, 1, video_size, True, )
+=======
+    fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+    video_dst = os.path.join(dst_path, 'output.avi')
+    vid = cv2.VideoWriter(video_dst, fourcc, 1, (512, 512), True, )
+>>>>>>> 41d1f5d1ff270c1257ec6b12c13efc3a8cafc482
 
     image_list = glob.glob(os.path.join(
         common_args['drone_folder_path'], ('*.JPG')))
@@ -52,6 +62,7 @@ def main(args):
 
     for idx, drone_path in enumerate(image_list):
         drone_img_loader.load_img(drone_path)
+<<<<<<< HEAD
 
         drone_image = drone_img_loader.get_img()
         pcl_image = pcl_img_loader.get_img()
@@ -65,6 +76,20 @@ def main(args):
 
     if common_args['record'] is True:
         vid.release()
+=======
+
+        drone_image = drone_img_loader.get_img()
+        pcl_image = pcl_img_loader.get_img()
+
+        result = registration.registrate(
+            drone_image, pcl_image, args, dst_path, idx, debug=common_args['debug'])
+        cv2.imwrite(os.path.join(
+            dst_path, 'result_' + str(idx) + '.jpg'), result)
+
+        vid.write(cv2.resize(result, (512, 512)))
+
+    vid.release()
+>>>>>>> 41d1f5d1ff270c1257ec6b12c13efc3a8cafc482
 
 
 if __name__ == '__main__':
