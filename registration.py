@@ -28,7 +28,7 @@ def registrate(drone_img_ori, pcl_img_ori, args):
 
     drone_feature_extractor.compute()
 
-    if common_args['use_mask'] == True:
+    if common_args['use_mask'] is True:
         pcl_feature_extractor.compute(mask=pcl_mask)
 
     else:

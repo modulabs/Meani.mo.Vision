@@ -35,7 +35,7 @@ def main(args):
         './', 'experiment' + str(common_args['experiment_num']) + '_' + dataSetStr)
     makedirs(dst_path)
 
-    if common_args['record'] == True:
+    if common_args['record'] is True:
         video_size = (3000, 3000)
         fourcc = cv2.VideoWriter_fourcc(*'DIVX')
         video_dst = os.path.join(dst_path, 'output.avi')
@@ -60,10 +60,10 @@ def main(args):
         cv2.imwrite(os.path.join(
             dst_path, 'result_' + str(idx) + '.jpg'), result)
     
-        if common_args['record'] == True:
+        if common_args['record'] is True:
             vid.write(cv2.resize(result, (3000, 3000)))
 
-    if common_args['record'] == True:
+    if common_args['record'] is True:
         vid.release()
 
 
