@@ -30,7 +30,7 @@ class Matcher:
 
     def get_good_matchs(self):
         return self._good_matches
-    
+
     def get_matchs(self):
         return self.matches
 

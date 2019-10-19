@@ -5,13 +5,13 @@ FETURE_EXTRACTORS = ['SIFT']
 
 class FeatureExtractor:
 
-    def __init__(self, src, algorithm, args):        
+    def __init__(self, src, algorithm, args):
         self.common_args = {
-        'SIFT_nfeatures': args.SIFT_nfeatures,
-        'SIFT_nOctaveLayers': args.SIFT_nOctaveLayers,
-        'SIFT_contrastThreshold': args.SIFT_contrastThreshold,
-        'SIFT_edgeThreshold': args.SIFT_edgeThreshold,
-        'SIFT_sigma': args.SIFT_sigma
+            'SIFT_nfeatures': args.SIFT_nfeatures,
+            'SIFT_nOctaveLayers': args.SIFT_nOctaveLayers,
+            'SIFT_contrastThreshold': args.SIFT_contrastThreshold,
+            'SIFT_edgeThreshold': args.SIFT_edgeThreshold,
+            'SIFT_sigma': args.SIFT_sigma
         }
         self._extractor = self._select_algorithm(algorithm)
         self._src_image = src

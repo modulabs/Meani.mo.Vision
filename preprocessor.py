@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 class Preprocessor:
 
     def __init__(self, drone_img, pcl_img):
@@ -14,16 +15,16 @@ class Preprocessor:
         self.processed_pcl_mask = None
         self.masked_drone_img = None
         self.masked_pcl_img = None
-        
 
     def preprocessing(self):
         self.processed_drone_img = self._drone_img_preprocessing()
         self.processed_pcl_img = self._pcl_img_preprocessing()
         self.processed_drone_mask = self._process_drone_mask()
         self.processed_pcl_mask = self._process_pcl_mask()
-        self.masked_drone_img = self._get_masked_img(self.processed_drone_img, self.processed_drone_mask)
-        self.masked_pcl_img = self._get_masked_img(self.processed_pcl_img, self.processed_pcl_mask)
-        
+        self.masked_drone_img = self._get_masked_img(
+            self.processed_drone_img, self.processed_drone_mask)
+        self.masked_pcl_img = self._get_masked_img(
+            self.processed_pcl_img, self.processed_pcl_mask)
 
     def _get_masked_img(self, img, mask):
         masked_img = cv2.bitwise_and(img, mask, None)
@@ -73,10 +74,10 @@ class Preprocessor:
 
     def get_processed_imgs(self):
 
-        return {'processed_drone_img':self.processed_drone_img, 
-                'processed_pcl_img':self.processed_pcl_img, 
-                'processed_drone_mask':self.processed_drone_mask,
-                'processed_pcl_mask':self.processed_pcl_mask,
-                'masked_drone_img':self.masked_drone_img,
-                'masked_pcl_img':self.masked_pcl_img
+        return {'processed_drone_img': self.processed_drone_img,
+                'processed_pcl_img': self.processed_pcl_img,
+                'processed_drone_mask': self.processed_drone_mask,
+                'processed_pcl_mask': self.processed_pcl_mask,
+                'masked_drone_img': self.masked_drone_img,
+                'masked_pcl_img': self.masked_pcl_img
                 }

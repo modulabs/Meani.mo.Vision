@@ -35,6 +35,7 @@ def main(args):
         result = registration.registrate(drone_image, pcl_image, args)
         resultWriter.saveResults(result, idx)
 
+
 if __name__ == '__main__':
     args = parser.make_parser()
     main(args)
