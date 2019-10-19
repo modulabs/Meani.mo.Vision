@@ -24,14 +24,17 @@ class Matcher:
         self._lidar_descs = lidar_descs
 
     def extract_match(self, ratio=0.75):
-        matches = self.matcher.knnMatch(
+        self.matches = self.matcher.knnMatch(
             self._lidar_descs, trainDescriptors=self._drone_descs, k=2)
-        self._good_matches = self.find_good_matches(matches, ratio)
+        self._good_matches = self.find_good_matches(self.matches, ratio)
 
     def get_good_matchs(self):
         return self._good_matches
+    
+    def get_matchs(self):
+        return self.matches
 
-    def find_good_matches(self, matches, ratio=0.75):
+    def find_good_matches(self, matches, ratio):
         good_matches = []
         for m, n in matches:
             if m.distance < ratio * n.distance:
@@ -73,5 +76,4 @@ class Matcher:
             None,
             **draw_params)
 
-        plt.imshow(matching_img, 'gray')
-        plt.show()
+        return matching_img
