@@ -11,7 +11,7 @@ from featureExtractor import FeatureExtractor
 from matcher import Matcher
 
 
-def registrate(drone_img_ori, pcl_img_ori, args):
+def registrate(drone_img_ori, pcl_img_ori, mask_image, args):
     common_args = {
         'pcl_mask': args.pcl_mask,
         'drone_mask': args.drone_mask,
@@ -25,7 +25,7 @@ def registrate(drone_img_ori, pcl_img_ori, args):
     result = {}
 
     # Preprocess Images
-    img_preprocessor = Preprocessor(drone_img_ori, pcl_img_ori)
+    img_preprocessor = Preprocessor(drone_img_ori, pcl_img_ori, mask_image)
     img_preprocessor.preprocessing()
     imgs = img_preprocessor.get_processed_imgs()
 
@@ -48,16 +48,21 @@ def registrate(drone_img_ori, pcl_img_ori, args):
     pcl_feature_extractor = FeatureExtractor(processed_pcl_img, "SIFT", args)
 
     if common_args['pcl_mask'] is True:
+        print("pcl_mask: True")
         pcl_feature_extractor.compute(mask=processed_pcl_mask)
     else:
+        print("No pcl_mask")
         pcl_feature_extractor.compute(mask=None)
 
     if common_args['drone_mask'] is True:
+        print("drone_mask: True")
         drone_feature_extractor.compute(mask=processed_drone_mask)
     else:
+        print('No drone_mask')
         drone_feature_extractor.compute(mask=None)
 
     drone_features, drone_descs = drone_feature_extractor.get_features_and_descriptors()
+
     pcl_features, pcl_descs = pcl_feature_extractor.get_features_and_descriptors()
 
     if common_args['save_keypoints'] is True:
@@ -69,7 +74,7 @@ def registrate(drone_img_ori, pcl_img_ori, args):
         result.update({'keypoints_drone_image': keypoints_drone})
 
     # Find Matching
-    matcher = Matcher(drone_features, drone_descs, pcl_features, pcl_descs)
+    matcher = Matcher(drone_features, drone_descs, pcl_features, pcl_descs, args)
     matcher.extract_match()
 
     raw_matchs = matcher.get_matchs()
@@ -78,11 +83,11 @@ def registrate(drone_img_ori, pcl_img_ori, args):
     # Find Homography
     homography, status = find_homography(
         drone_features, pcl_features, good_matchs, args)
-
+ 
     if common_args['save_csv'] is True:
-        result.update({'drone_total_keypoints': len(pcl_features)})
-        result.update({'pcl_total_keypoints': len(drone_features)})
-        result.update({'num_inliers': 10})
+        result.update({'drone_total_keypoints': len(drone_features)})
+        result.update({'pcl_total_keypoints': len(pcl_features)})
+        result.update({'num_inliers': (status.ravel().astype(int) == 1).sum()})
         result.update({'num_raw_matches': len(raw_matchs)})
         result.update({'num_good_matches': len(good_matchs)})
         result.update({'homography': homography})

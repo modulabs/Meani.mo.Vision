@@ -66,18 +66,6 @@ class ResultWriter:
             data = "Num, %d\n" % idx
             self.f.write(data)
 
-            np.savetxt(self.f, result['homography'], delimiter=",")
-
-            det = np.linalg.det(result['homography'])
-            data = "Det, %f\n" % det
-            self.f.write(data)
-
-            x = result['homography'][0][0]
-            y = result['homography'][1][1]
-            ratio = x/y
-            data = "ratio, %f\n\n" % ratio
-            self.f.write(data)
-
             drone_total_keypoints = result['drone_total_keypoints']
             data = "drone_total_keypoints, %d\n" % drone_total_keypoints
             self.f.write(data)
@@ -86,16 +74,27 @@ class ResultWriter:
             data = "pcl_total_keypoints, %d\n" % pcl_total_keypoints
             self.f.write(data)
 
-            num_inliers = result['num_inliers']
-            data = "num_inliers, %d\n" % num_inliers
-            self.f.write(data)
-
             num_raw_matches = result['num_raw_matches']
             data = "num_raw_matches, %d\n" % num_raw_matches
             self.f.write(data)
 
             num_good_matches = result['num_good_matches']
             data = "num_good_matches, %d\n" % num_good_matches
+            self.f.write(data)
+
+            num_inliers = result['num_inliers']
+            data = "num_inliers, %d\n" % num_inliers
+            self.f.write(data)
+            
+            np.savetxt(self.f, result['homography'], delimiter=",")
+            det = np.linalg.det(result['homography'])
+            data = "Det, %f\n" % det
+            self.f.write(data)
+
+            x = result['homography'][0][0]
+            y = result['homography'][1][1]
+            ratio = x/y
+            data = "ratio, %f\n\n" % ratio
             self.f.write(data)
 
         if self.common_args['save_video'] is True:

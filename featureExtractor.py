@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 FETURE_EXTRACTORS = ['SIFT']
 
@@ -29,6 +30,8 @@ class FeatureExtractor:
             )
 
     def compute(self, mask=None):
+        print(mask.shape)
+        print(np.max(mask))
         self.features, self.descriptors = self._extractor.detectAndCompute(
             self._src_image, mask)
 

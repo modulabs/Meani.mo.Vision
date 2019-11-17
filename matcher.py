@@ -10,7 +10,7 @@ class Matcher:
             drone_features,
             drone_descs,
             lidar_features,
-            lidar_descs):
+            lidar_descs, args):
         FLANN_INDEX_KDTREE = 1
         flann_params = dict(algorithm=FLANN_INDEX_KDTREE,
                             trees=5)
@@ -22,6 +22,7 @@ class Matcher:
 
         self._lidar_features = lidar_features
         self._lidar_descs = lidar_descs
+        self._find_good = args.find_good_match
 
     def extract_match(self, ratio=0.75):
         self.matches = self.matcher.knnMatch(
@@ -37,7 +38,10 @@ class Matcher:
     def find_good_matches(self, matches, ratio):
         good_matches = []
         for m, n in matches:
-            if m.distance < ratio * n.distance:
+            if self._find_good is True:
+                if m.distance < ratio * n.distance:
+                    good_matches.append(m)
+            else:
                 good_matches.append(m)
         return good_matches
 

@@ -5,9 +5,10 @@ import matplotlib.pyplot as plt
 
 class Preprocessor:
 
-    def __init__(self, drone_img, pcl_img):
+    def __init__(self, drone_img, pcl_img, mask_image):
         self.drone_img = drone_img
         self.pcl_img = pcl_img
+        self.mask_image = mask_image
 
         self.processed_drone_img = None
         self.processed_pcl_img = None
@@ -27,18 +28,19 @@ class Preprocessor:
             self.processed_pcl_img, self.processed_pcl_mask)
 
     def _get_masked_img(self, img, mask):
+        print(img.shape)
+        print(mask.shape)
         masked_img = cv2.bitwise_and(img, mask, None)
         return masked_img
 
     def _drone_img_preprocessing(self):
-        # TODO
         return cv2.cvtColor(self.drone_img, cv2.COLOR_BGR2GRAY)
-        # return cv2.GaussianBlur(
-        #    cv2.cvtColor(
-        #        self.drone_img, cv2.COLOR_BGR2GRAY), (5, 5), 0)
 
     def _process_drone_mask(self):
-        return cv2.imread('/media/visionnoob/dataset/Sample Data (2)/ex1/CASE1_1/mask.bmp', cv2.IMREAD_GRAYSCALE)
+        #mask = cv2.imread('/media/visionnoob/dataset/Sample Data (2)/ex3/3/mask.png', cv2.IMREAD_GRAYSCALE)
+        #mask = mask * 255
+        #ret, mask = cv2.threshold(mask, 100, 255, cv2.THRESH_BINARY)
+        return cv2.cvtColor(self.mask_image, cv2.COLOR_BGR2GRAY) 
 
     def _process_pcl_mask(self):
         plc_img = self.processed_pcl_img

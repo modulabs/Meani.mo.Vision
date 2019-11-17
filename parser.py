@@ -4,30 +4,34 @@ import argparse
 def make_parser():
     parser = argparse.ArgumentParser(description='Meani.mo Vision')
 
+    parser.add_argument('--experiment_num', '-e',
+                        default=18, help='Experiment Number')
+
     # path arguments
     parser.add_argument('--drone_folder_path', '-s',
-                        default='/media/visionnoob/dataset/Sample Data (2)/ex1/CASE1_1',
+                        default='/media/visionnoob/dataset/Sample Data (2)/CASE_1/images',
                         required=False, help='Path in which drone image folder is located')
 
     parser.add_argument('--pcl_path', '-l',
-                        default='/media/visionnoob/dataset/Sample Data (2)/ex1/CASE1_1/case1(raw).png',
+                        default='/media/visionnoob/dataset/Sample Data (2)/CASE_1/images',
                         required=False, help='Path in which lidar image is located')
 
-    parser.add_argument('--experiment_num', '-e',
-                        default=11, help='Experiment Number')
+    parser.add_argument('--drone_mask_path', '-m',
+                        default='/media/visionnoob/dataset/Sample Data (2)/CASE_1/mask(predict)',
+                        required=False, help='Path in which mask image is located')
 
     # Algorithm parameter arguments
     parser.add_argument('--find_good_match', default=True, help='')
-    parser.add_argument('--remove_duplicated', default=True, help='')
+    parser.add_argument('--remove_duplicated', default=False, help='')
 
-    # Binary Mask
+    # Binary Masks
     parser.add_argument('--pcl_mask', default=True,
                         help='Applying binary mask to a pcl image')
-    parser.add_argument('--drone_mask', default=False,
+    parser.add_argument('--drone_mask', default=True,
                         help='Applying binary mask to a drone image')
 
     # RANSAC (see https://docs.opencv.org/3.4.0/d9/d0c/group__calib3d.html#ga4abc2ece9fab9398f2e560d53c8c9780)
-    parser.add_argument('--ransac_maxIters', default=2000, type=int,
+    parser.add_argument('--ransac_maxIters', default=100000, type=int,
                         help='The maximum number of RANSAC iterations, 2000 is the maximum it can be.')
     parser.add_argument('--ransac_confidence', default=0.995, type=float,
                         help='Confidence level, between 0 and 1 (default:0.995).')
