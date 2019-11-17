@@ -102,3 +102,16 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# visual studio code
+.vscode
+
+# image 
+images
+*.bmp
+*.jpg
+*.png
+*.zip
+*.avi
+
+*.csv
